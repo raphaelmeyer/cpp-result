@@ -1,0 +1,18 @@
+#!/bin/bash
+
+script_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+build_dir="${script_dir}/_build"
+
+export CC=clang
+export CXX=clang++
+
+if [ ! -d "${build_dir}" ] ; then
+    mkdir -p "${build_dir}"
+fi
+
+if [ ! -f "${build_dir}/build.ninja" ] ; then
+    cd "${build_dir}"
+    cmake "${script_dir}" -G "Ninja"
+fi
+
+cmake --build "${build_dir}"
