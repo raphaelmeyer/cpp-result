@@ -69,7 +69,6 @@ Feature different_types {
       Require(result.is_err(), Equals(true));
       Require(result.err(), Equals(23));
     }},
-
   }
 };
 
@@ -81,6 +80,20 @@ Feature same_type {
 
       Require(result.is_err(), Equals(true));
       Require(result.err(), Equals(int{}));
+    }},
+
+    Scenario{"Create result with make_ok", []{
+      auto const result = make_ok<int, int>(23);
+
+      Require(result.is_ok(), Equals(true));
+      Require(result.ok(), Equals(23));
+    }},
+
+    Scenario{"Create error with make_error", []{
+      auto const result = make_err<int, int>(77);
+
+      Require(result.is_err(), Equals(true));
+      Require(result.err(), Equals(77));
     }},
   }
 };
