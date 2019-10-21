@@ -69,31 +69,66 @@ Feature different_types {
       Require(result.is_err(), Equals(true));
       Require(result.err(), Equals(23));
     }},
+
+    Scenario{"copy construction", []{
+      Result<int, std::string> const result{1337};
+      auto const new_result{result};
+
+      Require(new_result.is_ok(), Equals(true));
+      Require(new_result.ok(), Equals(1337));
+    }},
+
+    Scenario{"copy or move construction", []{
+      auto const new_result{Result<int, std::string>{178}};
+
+      Require(new_result.is_ok(), Equals(true));
+      Require(new_result.ok(), Equals(178));
+    }},
   }
 };
 
 Feature same_type {
   "Same type for result and error",
   {
-    Scenario{"Default construction", []{
+    Scenario{"default construction", []{
       Result<int, int> const result{};
 
       Require(result.is_err(), Equals(true));
       Require(result.err(), Equals(int{}));
     }},
 
-    Scenario{"Create result with make_ok", []{
+    Scenario{"create result with make_ok", []{
       auto const result = make_ok<int, int>(23);
 
       Require(result.is_ok(), Equals(true));
       Require(result.ok(), Equals(23));
     }},
 
-    Scenario{"Create error with make_error", []{
+    Scenario{"create error with make_error", []{
       auto const result = make_err<int, int>(77);
 
       Require(result.is_err(), Equals(true));
       Require(result.err(), Equals(77));
+    }},
+
+    Scenario{"assign result", []{
+      Result<int, int> result{};
+      Require(result.is_err(), Equals(true));
+
+      result = make_ok<int, int>(178);
+
+      Require(result.is_ok(), Equals(true));
+      Require(result.ok(), Equals(178));
+    }},
+
+    Scenario{"assign error", []{
+      Result<std::string, std::string> result{};
+      Require(result.is_err(), Equals(true));
+
+      result = make_err<std::string, std::string>("error"s);
+
+      Require(result.is_err(), Equals(true));
+      Require(result.err(), Equals("error"s));
     }},
   }
 };
