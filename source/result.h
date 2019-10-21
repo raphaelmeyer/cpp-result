@@ -1,18 +1,25 @@
 #pragma once
 
+#include <variant>
+
 namespace rm {
 
 template<typename OkType, typename ErrType>
 class Result
 {
 public:
-  ErrType const & err() const { return _value; }
+  Result() : _value{} {}
 
-  bool is_err() const { return true; }
-  bool is_ok() const { return false; }
+  Result(OkType value) : _value{std::move(value)} {}
+
+  ErrType const & err() const { return std::get<ErrType>(_value); }
+  OkType const & ok() const { return std::get<OkType>(_value); }
+
+  bool is_err() const { return std::holds_alternative<ErrType>(_value); }
+  bool is_ok() const { return std::holds_alternative<OkType>(_value); }
 
 private:
-  std::string const _value = "";
+  std::variant<ErrType, OkType> _value;
 };
 
 } // namespace ns

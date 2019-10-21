@@ -17,6 +17,13 @@ Feature feature{
 
       Require(result.is_ok(), Equals(false));
     }},
+
+    Scenario{"initialize result by value", []{
+      Result<int, std::string> result{42};
+
+      Require(result.is_ok(), Equals(true));
+      Require(result.ok(), Equals(42));
+    }},
   }
 };
 
