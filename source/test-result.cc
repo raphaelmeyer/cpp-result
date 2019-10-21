@@ -73,4 +73,16 @@ Feature different_types {
   }
 };
 
+Feature same_type {
+  "Same type for result and error",
+  {
+    Scenario{"Default construction", []{
+      Result<int, int> const result{};
+
+      Require(result.is_err(), Equals(true));
+      Require(result.err(), Equals(int{}));
+    }},
+  }
+};
+
 } // namespace
