@@ -50,4 +50,5 @@ auto make_err(ErrType value) {
   return T{std::variant<ErrType, OkType>{std::in_place_index<T::err_index>, std::move(value)}};
 }
 
-} // namespace ns
+} // namespace rm
+
