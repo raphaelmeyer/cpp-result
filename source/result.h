@@ -8,8 +8,12 @@ template<typename OkType, typename ErrType>
 class Result
 {
 public:
+  static_assert(not std::is_same<OkType, ErrType>::value,
+    "Result and Error type must be different");
+
   Result() : _value{} {}
 
+  Result(ErrType value) : _value{std::move(value)} {}
   Result(OkType value) : _value{std::move(value)} {}
 
   ErrType const & err() const { return std::get<ErrType>(_value); }
