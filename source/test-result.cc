@@ -133,4 +133,20 @@ Feature same_type {
   }
 };
 
+Feature operator_bind {
+  "Operator bind (>>=)",
+  {
+    Scenario{"simple bind", []{
+      auto const result = Result<int, std::string>{11} >>= [](int x) {
+        return Result<int, std::string>{2 * x};
+      };
+
+      Require(result.is_ok(), Equals(true));
+      Require(result.ok(), Equals(22));
+    }},
+
+    // TODO
+  }
+};
+
 } // namespace

@@ -28,8 +28,8 @@ public:
   bool is_ok() const { return _value.index() == ok_index; }
 
 private:
-  constexpr static std::size_t const err_index = 0;
-  constexpr static std::size_t const ok_index = 1;
+  constexpr static std::size_t err_index = 0;
+  constexpr static std::size_t ok_index = 1;
   std::variant<ErrType, OkType> _value;
 
   Result(std::variant<ErrType, OkType> value) : _value{std::move(value)} {}
@@ -50,5 +50,22 @@ auto make_err(ErrType value) {
   return T{std::variant<ErrType, OkType>{std::in_place_index<T::err_index>, std::move(value)}};
 }
 
-} // namespace rm
+// TODO restrict to Result<>
+template<typename In, typename ErrType, typename Func>
+auto operator>>=(Result<In, ErrType> const & value, Func f) -> decltype(f(value.ok())) {
+  if(value.is_err()) {
+    return value.err();
+  }
+  return f(value.ok());
+}
 
+// TODO restrict to Result<>
+template<typename In, typename ErrType, typename Func>
+auto operator>>(Result<In, ErrType> const & value, Func f) -> decltype(f()) {
+  if(value.is_err()) {
+    return value.err();
+  }
+  return f();
+}
+
+} // namespace rm
