@@ -22,7 +22,7 @@ struct Equals {
   Equals(E expected) : expected_(expected) {}
 
   template<typename A>
-  void operator()(A actual) {
+  void operator()(A const & actual) {
     if(actual != expected_) {
       std::ostringstream message;
       message << "expecting '" << expected_ << "' but is '" << actual << "'";
@@ -38,7 +38,7 @@ struct Not {
   Not(E unexpected) : unexpected_(unexpected) {}
 
   template<typename A>
-  void operator()(A actual) {
+  void operator()(A const & actual) {
     if(actual == unexpected_) {
       std::ostringstream message;
       message << "not expecting '" << actual << "'";
@@ -50,7 +50,8 @@ struct Not {
 };
 
 template<typename T, typename Matcher>
-void Require(T actual, Matcher match) {
+void Require(T const & actual, Matcher match) {
   match(actual);
 }
 
+void Require(bool condition);

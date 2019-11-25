@@ -27,6 +27,8 @@ public:
   bool is_err() const { return _value.index() == err_index; }
   bool is_ok() const { return _value.index() == ok_index; }
 
+  operator bool() const { return is_ok(); }
+
 private:
   constexpr static std::size_t err_index = 0;
   constexpr static std::size_t ok_index = 1;

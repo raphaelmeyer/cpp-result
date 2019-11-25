@@ -84,6 +84,14 @@ Feature different_types {
       Require(new_result.is_ok(), Equals(true));
       Require(new_result.ok(), Equals(178));
     }},
+
+    Scenario{"bool conversion", []{
+      Result<int, std::string> result;
+      Require(not result);
+
+      result = 42;
+      Require(result);
+    }},
   }
 };
 

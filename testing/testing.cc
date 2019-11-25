@@ -53,6 +53,12 @@ TestGroup::TestGroup(std::string group, std::initializer_list<TestCase> const & 
   }
 }
 
+void Require(bool condition) {
+  if(not condition) {
+    throw std::logic_error{"condition not true"};
+  }
+}
+
 int main() {
   if(not run_tests()) {
     return 1;
